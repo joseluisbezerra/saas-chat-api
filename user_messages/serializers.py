@@ -16,3 +16,7 @@ class UserMessageSerializer(CompanySafeSerializerMixin, serializers.HyperlinkedM
             'text',
             'date',
         )
+
+        read_only_fields = (
+            'from_user',
+        )
