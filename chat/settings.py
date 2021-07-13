@@ -121,10 +121,9 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
+LOGIN_REDIRECT_URL = '/api/v1/user-messages/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# Django REST Framework
-LOGIN_REDIRECT_URL = '/api/v1/accounts/users'

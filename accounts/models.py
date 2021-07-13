@@ -20,6 +20,7 @@ class CompanyManager(models.Manager):
             username=username,
             password=password,
             company=company,
+            is_staff=True,
         )
 
         return company, user
