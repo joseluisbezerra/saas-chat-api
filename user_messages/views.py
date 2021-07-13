@@ -1,8 +1,19 @@
 from rest_framework import permissions
 from rest_framework import generics
 
+from core.views import CompanySafeViewMixin
 from . import serializers
 from .models import UserMessage
+
+
+class AdminMessageList(CompanySafeViewMixin, generics.ListAPIView):
+    name = 'adminmessages-list'
+    permission_classes = (
+        permissions.IsAuthenticated,
+        permissions.IsAdminUser,
+    )
+    serializer_class = serializers.UserMessageSerializer
+    queryset = UserMessage.objects.all()
 
 
 class UserMessageList(generics.ListCreateAPIView):
