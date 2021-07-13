@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from core.views import CompanySafeViewMixin
 
 from . import serializers
-
+from .permitions import IsUserOrReadOnly
 
 User = get_user_model()
 
@@ -16,27 +16,22 @@ class AccountCreate(generics.CreateAPIView):
 
 class UserList(CompanySafeViewMixin, generics.ListCreateAPIView):
     name = 'user-list'
-    permission_classes = (
-        permissions.IsAuthenticated,
-    )
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.UserSerializer
     queryset = User.objects.all()
 
 
 class UserDetail(CompanySafeViewMixin, generics.RetrieveUpdateDestroyAPIView):
     name = 'user-detail'
-    permission_classes = (
-        permissions.IsAuthenticated,
-    )
+    permission_classes = [
+        permissions.IsAuthenticated, IsUserOrReadOnly]
     serializer_class = serializers.UserSerializer
     queryset = User.objects.all()
 
 
 class CompanyDetail(generics.RetrieveUpdateAPIView):
     name = 'company-detail'
-    permission_classes = (
-        permissions.IsAuthenticated,
-    )
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.CompanySerializer
 
     def get_object(self):
