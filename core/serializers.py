@@ -7,7 +7,7 @@ class CompanySafeRelatedField(serializers.HyperlinkedRelatedField):
     def get_queryset(self):
         request = self.context['request']
         company_id = request.user.company_id
-        return super().get_queryset().filter(company_id=company_id)
+        return super().get_queryset().filter(company_id=company_id).exclude(id=request.user.id)
 
 
 class CompanySafeSerializerMixin(object):
