@@ -1,26 +1,30 @@
-from rest_framework import permissions
-from rest_framework import generics
+from rest_framework import permissions, generics
 
 from core.views import CompanySafeViewMixin
 from . import serializers
 from .models import UserMessage
 
+from user_messages.filters import UserMessagesFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
-class AdminMessageList(CompanySafeViewMixin, generics.ListAPIView):
-    name = 'adminmessages-list'
+
+class StalkerView(CompanySafeViewMixin, generics.ListAPIView):
+    name = 'stalker'
     permission_classes = [
         permissions.IsAuthenticated & permissions.IsAdminUser]
     serializer_class = serializers.UserMessageSerializer
     queryset = UserMessage.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserMessagesFilter
 
 
 class UserMessageList(generics.ListCreateAPIView):
     name = 'usermessage-list'
-    permission_classes = (
-        permissions.IsAuthenticated,
-    )
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.UserMessageSerializer
     queryset = UserMessage.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserMessagesFilter
 
     def perform_create(self, serializer):
         user = self.request.user
