@@ -6,6 +6,9 @@ from core.views import CompanySafeViewMixin
 from . import serializers
 from .permissions import IsAdmin, IsOwner, ReadOnly
 
+from accounts.filters import UserFilter
+from django_filters.rest_framework import DjangoFilterBackend
+
 User = get_user_model()
 
 
@@ -20,6 +23,8 @@ class UserList(CompanySafeViewMixin, generics.ListCreateAPIView):
         permissions.IsAuthenticated & permissions.IsAdminUser]
     serializer_class = serializers.UserSerializer
     queryset = User.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserFilter
 
 
 class UserDetail(CompanySafeViewMixin, generics.RetrieveUpdateDestroyAPIView):
