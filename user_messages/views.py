@@ -8,10 +8,8 @@ from .models import UserMessage
 
 class AdminMessageList(CompanySafeViewMixin, generics.ListAPIView):
     name = 'adminmessages-list'
-    permission_classes = (
-        permissions.IsAuthenticated,
-        permissions.IsAdminUser,
-    )
+    permission_classes = [
+        permissions.IsAuthenticated & permissions.IsAdminUser]
     serializer_class = serializers.UserMessageSerializer
     queryset = UserMessage.objects.all()
 
